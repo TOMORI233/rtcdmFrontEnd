@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h4>他院患者列表</h4>
+    <h4>他院患者列表
+      <a v-if="type===0">——全部患者</a>
+      <a v-if="type===1">——管理中关联患者</a>
+      <a v-if="type===2">——转出追踪</a>
+      <a v-if="type===3">——转入管理</a></h4></h4>
     <div>下属医院:
         <select name="orgcodeselect" v-model="orgCode" @change="refresh()">
             <option value="" disabled selected="selected">-请选择-</option>
@@ -9,13 +13,13 @@
     </div>
     <div>
       <a name="patientcounttext">该院共
-        <a href="#" @click="type=0;refresh()">{{ patientCount.totalCount }}</a>名患者，
+        <a href="javascript:void(0)" @click="type=0;refresh()">{{ patientCount.totalCount }}</a>名患者，
         其中管理中关联患者
-        <a href="#" @click="type=1;refresh()">{{ patientCount.managingCount }}</a>名，
+        <a href="javascript:void(0)" @click="type=1;refresh()">{{ patientCount.managingCount }}</a>名，
         转出患者
-        <a href="#" @click="type=2;refresh()">{{ patientCount.referralOutCount }}</a>名，
+        <a href="javascript:void(0)" @click="type=2;refresh()">{{ patientCount.referralOutCount }}</a>名，
         转入患者
-        <a href="#" @click="type=3;refresh()">{{ patientCount.referralInCount }}</a>名
+        <a href="javascript:void(0)" @click="type=3;refresh()">{{ patientCount.referralInCount }}</a>名
       </a>
       <button @click="refresh">刷新</button>
     </div>

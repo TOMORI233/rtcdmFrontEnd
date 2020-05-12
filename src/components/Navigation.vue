@@ -28,12 +28,12 @@
           <a>患者转诊</a>
           <li><a href="#/referralreviewlist">转入审核</a></li>
           <li>
-            <router-link v-if="auth === '个人账号'" :to="{name:'DocPatientList', params:{fromNavi:true, type:3}}" tag="a">个人转入管理</router-link>
-            <router-link v-else :to="{name:'ThisHosPatientList', params:{fromNavi:true, type:3}}" tag="a">本院转入管理</router-link>
+            <router-link v-if="auth === '个人账号'" :to="{name:'DocPatientList', query:{type:3}}" tag="a">个人转入管理</router-link>
+            <router-link v-else :to="{name:'ThisHosPatientList', query:{type:3}}" tag="a">本院转入管理</router-link>
           </li>
           <li>
-            <router-link v-if="auth === '个人账号'" :to="{name:'DocPatientList', params:{fromNavi:true, type:2}}" tag="a">个人转出追踪</router-link>
-            <router-link v-else :to="{name:'ThisHosPatientList', params:{fromNavi:true, type:2}}" tag="a">本院转出追踪</router-link>
+            <router-link v-if="auth === '个人账号'" :to="{name:'DocPatientList', query:{type:2}}" tag="a">个人转出追踪</router-link>
+            <router-link v-else :to="{name:'ThisHosPatientList', query:{type:2}}" tag="a">本院转出追踪</router-link>
           </li>
           <!-- <li><a href="#/referralautoreview">自动审核设置</a></li> -->
         </div>

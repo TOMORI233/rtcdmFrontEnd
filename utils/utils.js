@@ -37,7 +37,7 @@ function jsGetAge (strBirthday) {
         }
       }
     } else {
-      returnAge = -1// 返回-1 表示出生日期输入错误 晚于今天
+      returnAge = '生日非法'// 返回-1 表示出生日期输入错误 晚于今天
     }
   }
   return returnAge// 返回周岁年龄

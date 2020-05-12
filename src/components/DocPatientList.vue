@@ -1,15 +1,20 @@
 <template>
   <div>
-    <h4>个人管理患者列表</h4>
+    <h4>个人管理患者列表
+      <a v-if="type===0">——全部患者</a>
+      <a v-if="type===1">——管理中关联患者</a>
+      <a v-if="type===2">——转出追踪</a>
+      <a v-if="type===3">——转入管理</a>
+    </h4>
     <div>
       <a name="patientcounttext">您管理的患者共
-        <a href="#" @click="type=0;refresh()">{{ patientCount.totalCount }}</a>名，
+        <a href="javascript:void(0)" @click="type=0;refresh()">{{ patientCount.totalCount }}</a>名，
         其中管理中关联患者
-        <a href="#" @click="type=1;refresh()">{{ patientCount.managingCount }}</a>名，
+        <a href="javascript:void(0)" @click="type=1;refresh()">{{ patientCount.managingCount }}</a>名，
         转出患者
-        <a href="#" @click="type=2;refresh()">{{ patientCount.referralOutCount }}</a>名，
+        <a href="javascript:void(0)" @click="type=2;refresh()">{{ patientCount.referralOutCount }}</a>名，
         转入患者
-        <a href="#" @click="type=3;refresh()">{{ patientCount.referralInCount }}</a>名
+        <a href="javascript:void(0)" @click="type=3;refresh()">{{ patientCount.referralInCount }}</a>名
       </a>
       <button @click="refresh">刷新</button>
     </div>
@@ -27,7 +32,6 @@
         <li>
           <a>
             <select name="pagesize" v-model="pageOffset" @change="refresh">
-              <option value="3">3</option>
               <option value="5">5</option>
               <option value="10">10</option>
             </select>
@@ -113,9 +117,8 @@ export default {
     }
   },
   created () {
-    console.log('转到个人页面')
-    if (this.$route.params.fromNavi === true) {
-      this.type = this.$route.params.type
+    if (JSON.stringify(this.$route.query) !== '{}') {
+      this.type = this.$route.query.type
     }
     this.fetchData()
   },
@@ -143,6 +146,12 @@ export default {
         left++
       }
       return ar
+    }
+  },
+  watch: {
+    $route (val, oldVal) {
+      this.type = this.$route.query.type
+      this.refresh()
     }
   }
 }

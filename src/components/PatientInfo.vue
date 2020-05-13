@@ -2,7 +2,7 @@
  * @Author: TOMORI
  * @Date: 2020-05-12 21:10:06
  * @Last Modified by: TOMORI
- * @Last Modified time: 2020-05-13 13:11:02
+ * @Last Modified time: 2020-05-13 15:45:51
  */
 <template>
     <div>
@@ -17,7 +17,7 @@
                 <input type="radio" :value='5' v-model="type" @change="refresh()">评估记录
                 <input type="radio" :value='6' v-model="type" @change="refresh()">转诊历史
             </div>
-            <button>随访</button>
+            <router-link :to="{name:'SubmitFollowupRecord', query:{patientID:patientID,alertSerialNo:alertSerialNo,followupPlanSerialNo:followupPlanSerialNo}, params:{patientAlertList:patientAlertList}}" tag="button">随访</router-link>
             <!-- <button>消息</button> -->
             <button>转诊</button>
             <button @click="goBack">返回</button>
@@ -351,6 +351,7 @@ export default {
   inject: ['reload'],
   data () {
     return {
+      // page params
       type: 0,
       recordType: 1,
       totalEl: 0,
@@ -363,9 +364,15 @@ export default {
       selectEndDate: '',
       timeSelect: 'off',
       patientID: '',
+      alertSerialNo: null,
+      followupPlanSerialNo: null,
+      interveneAll: null,
+      patientAlertList: null,
+      // baseInfo
       baseInfo: {},
       manageInfo: {},
       referralInfo: {},
+      // history
       alertHistory: [],
       followupHistory: [],
       managePlanHistory: [],
@@ -379,7 +386,7 @@ export default {
       weightHistory: [],
       discomfortHistory: [],
       drugHistory: [],
-
+      // trans data
       doctorName: '',
       orgName: '',
       referralOrgName: '',
@@ -561,7 +568,6 @@ export default {
         }
       }).then(res => {
         const result = res.data.data
-        console.log(result)
         if (res.data.data !== null) {
           switch (recordType) {
             case 1: this.catHistory = result; break
@@ -628,7 +634,19 @@ export default {
   },
   created () {
     this.setOneWeek()
-    this.patientID = this.$route.params.patientID
+    this.patientID = this.$route.query.patientID
+    if (this.$route.query.alertSerialNo !== undefined) {
+      this.alertSerialNo = this.$route.query.alertSerialNo
+    }
+    if (this.$route.query.followupPlanSerialNo !== undefined) {
+      this.followupPlanSerialNo = this.$route.query.followupPlanSerialNo
+    }
+    if (this.$route.query.interveneAll !== undefined) {
+      this.interveneAll = this.$route.query.interveneAll
+    }
+    if (this.interveneAll === true) {
+      this.patientAlertList = this.$route.params.patientAlertList
+    }
     this.fetchData()
   },
   computed: {

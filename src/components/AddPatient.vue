@@ -1,6 +1,7 @@
 <template>
   <div>
       <h4>新增患者</h4>
+
       <a>带*为必填项</a>
       <form @submit.prevent="handleSubmit">
           <table border="1">
@@ -128,7 +129,7 @@
                     <input type="submit" value="保存">
                 </td>
                 <td>
-                    <button @click="destroy">取消</button>
+                    <button type="button" @click="destroy">取消</button>
                 </td>
             </tr>
         </table>

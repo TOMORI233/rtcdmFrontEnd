@@ -80,7 +80,7 @@
               <a v-if="type===0&&$dict.manageStatus[alert.manageItem.manageStatus]!=='管理中'">不可操作</a>
               <table v-else>
                 <tr v-for="item in alert.alertItemList" :key="item.serialNo">
-                  <router-link :to="{name:'PatientInfo', params:{patientID:alert.patientID, alertSerialNo:item.serialNo, interveneAll:false}}">干预</router-link>|
+                  <router-link :to="{name:'PatientInfo', query:{patientID:alert.patientID, alertSerialNo:item.serialNo, interveneAll:false}}">干预</router-link>|
                   <router-link :to="{name:'IgnoreAlert', params:{serialNo:item.serialNo, ignoreAll:false}}">忽略</router-link>
                 </tr>
               </table>
@@ -88,7 +88,7 @@
             <td>
               <a v-if="type===0&&$dict.manageStatus[alert.manageItem.manageStatus]!=='管理中'">不可操作</a>
               <div v-else>
-                <router-link :to="{name:'PatientInfo', params:{patientID:alert.patientID, patientAlertList:alert.alertItemList, interveneAll:true}}">全部干预</router-link>|
+                <router-link :to="{name:'PatientInfo', query:{patientID:alert.patientID, interveneAll:true}, params:{patientAlertList:alert.alertItemList}}">全部干预</router-link>|
                 <router-link :to="{name:'IgnoreAlert', params:{patientAlertList:alert.alertItemList, ignoreAll:true}}">忽略全部</router-link>
               </div>
             </td>

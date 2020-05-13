@@ -1,3 +1,9 @@
+/*
+ * @Author: TOMORI
+ * @Date: 2020-05-13 13:15:22
+ * @Last Modified by: TOMORI
+ * @Last Modified time: 2020-05-13 13:46:37
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home.vue'
@@ -14,6 +20,7 @@ import RefuseRegister from '../components/RefuseRegister.vue'
 import AddPatient from '../components/AddPatient.vue'
 import RefuseReferral from '../components/RefuseReferral.vue'
 import PatientInfo from '../components/PatientInfo.vue'
+import SubmitFollowupRecord from '../components/SubmitFollowupRecord.vue'
 
 Vue.use(Router)
 
@@ -99,6 +106,11 @@ export default new Router({
       path: '/patientinfo',
       name: 'PatientInfo',
       component: PatientInfo
+    },
+    {
+      path: '/submitfollowuprecord',
+      name: 'SubmitFollowupRecord',
+      component: SubmitFollowupRecord
     }
   ]
 })

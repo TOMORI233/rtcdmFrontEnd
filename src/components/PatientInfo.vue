@@ -2,7 +2,7 @@
  * @Author: TOMORI
  * @Date: 2020-05-12 21:10:06
  * @Last Modified by: TOMORI
- * @Last Modified time: 2020-05-13 15:45:51
+ * @Last Modified time: 2020-05-13 20:29:40
  */
 <template>
     <div>
@@ -19,7 +19,7 @@
             </div>
             <router-link :to="{name:'SubmitFollowupRecord', query:{patientID:patientID,alertSerialNo:alertSerialNo,followupPlanSerialNo:followupPlanSerialNo}, params:{patientAlertList:patientAlertList}}" tag="button">随访</router-link>
             <!-- <button>消息</button> -->
-            <button>转诊</button>
+            <router-link :to="{name:'ApplyReferral', query:{patientID:patientID,name:baseInfo.name,alertSerialNo:alertSerialNo}}" tag="button">转诊</router-link>
             <button @click="goBack">返回</button>
             <button @click="refresh">刷新</button>
         </div>
@@ -495,7 +495,9 @@ export default {
         if (res.data.data !== null) {
           this.referralInfo = res.data.data
           this.getOrgNameByOrgCode(this.referralInfo.orgCode)
-          this.getReferralDoctorName(this.referralInfo.doctorID)
+          if (this.referralInfo.doctorID !== null) {
+            this.getReferralDoctorName(this.referralInfo.doctorID)
+          }
         }
       })
     },

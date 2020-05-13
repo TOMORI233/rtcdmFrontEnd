@@ -2,7 +2,7 @@
  * @Author: TOMORI
  * @Date: 2020-05-13 13:15:22
  * @Last Modified by: TOMORI
- * @Last Modified time: 2020-05-13 13:46:37
+ * @Last Modified time: 2020-05-13 15:50:30
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -21,6 +21,7 @@ import AddPatient from '../components/AddPatient.vue'
 import RefuseReferral from '../components/RefuseReferral.vue'
 import PatientInfo from '../components/PatientInfo.vue'
 import SubmitFollowupRecord from '../components/SubmitFollowupRecord.vue'
+import ApplyReferral from '../components/ApplyReferral.vue'
 
 Vue.use(Router)
 
@@ -111,6 +112,11 @@ export default new Router({
       path: '/submitfollowuprecord',
       name: 'SubmitFollowupRecord',
       component: SubmitFollowupRecord
+    },
+    {
+      path: '/applyreferral',
+      name: 'ApplyReferral',
+      component: ApplyReferral
     }
   ]
 })

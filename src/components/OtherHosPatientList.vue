@@ -4,12 +4,25 @@
       <a v-if="type===0">——全部患者</a>
       <a v-if="type===1">——管理中关联患者</a>
       <a v-if="type===2">——转出追踪</a>
-      <a v-if="type===3">——转入管理</a></h4></h4>
+      <a v-if="type===3">——转入管理</a>
+    </h4>
     <div>下属医院:
-        <select name="orgcodeselect" v-model="orgCode" @change="refresh()">
-            <option value="" disabled selected="selected">-请选择-</option>
-            <option v-for="hospital in subHos" :key="hospital.orgCode" :value="hospital.orgCode">{{ hospital.orgName }}</option>
-        </select>
+      <select v-model="divisionArray[0]" @change="divisionArray[1]='';divisionArray[2]='';orgCode=''">
+          <option value="" selected>-请选择第一级单位-</option>
+          <option v-for="(item0,index0) in divisionList" :key="index0" :value="index0">{{ item0.divisionName }}</option>
+      </select>
+      <select v-if="divisionArray[0]!==''" v-model="divisionArray[1]" @change="divisionArray[2]='';orgCode=''">
+          <option value="" selected>-请选择第二级单位-</option>
+          <option v-for="(item1,index1) in divisionList[divisionArray[0]].children" :key="index1" :value="index1">{{ item1.divisionName }}</option>
+      </select>
+      <select v-if="divisionArray[1]!==''" v-model="divisionArray[2]" @change="orgCode=''">
+          <option value="" selected>-请选择第三级单位-</option>
+          <option v-for="(item2,index2) in divisionList[divisionArray[0]].children[divisionArray[1]].children" :key="index2" :value="index2">{{ item2.divisionName }}</option>
+      </select>
+      <select v-model="orgCode" @change="refresh">
+          <option value="" disabled>-请选择-</option>
+          <option v-for="hospital in hospitalList" :key="hospital.serialNo" :value="hospital.orgCode">{{ hospital.orgName }}</option>
+      </select>
     </div>
     <div>
       <a name="patientcounttext">该院共
@@ -58,7 +71,7 @@ export default {
   data () {
     return {
       orgCode: '',
-      subHos: [],
+      hospitalList: [],
       patients: [],
       totalEl: 0,
       totalPages: 0,
@@ -70,7 +83,10 @@ export default {
         managingCount: '',
         referralOutCount: '',
         referralInCount: ''
-      }
+      },
+      divisionList: [{}],
+      divisionArray: ['', '', ''],
+      selectedDivisionCode: ''
     }
   },
   methods: {
@@ -107,16 +123,29 @@ export default {
         })
       }
     },
-    fetchSubHos () {
+    getDivisionList () {
       this.$axios({
-        url: 'http://localhost:18908/dict/org/subhospital',
+        url: 'http://localhost:18908/dict/division/list',
         method: 'get',
         params: {
-          orgCode: window.sessionStorage.getItem('orgCode')
+
         }
       }).then(res => {
         if (res.data.data !== null) {
-          this.subHos = res.data.data
+          this.divisionList = res.data.data
+        }
+      })
+    },
+    getHospitals () {
+      this.$axios({
+        url: 'http://localhost:18908/dict/org/list',
+        method: 'get',
+        params: {
+          divisionCode: this.selectedDivisionCode
+        }
+      }).then(res => {
+        if (res.data.data !== null) {
+          this.hospitalList = res.data.data
         }
       })
     },
@@ -137,7 +166,7 @@ export default {
   },
   created () {
     this.fetchData()
-    this.fetchSubHos()
+    this.getDivisionList()
   },
   computed: {
     indexs () {
@@ -163,6 +192,22 @@ export default {
         left++
       }
       return ar
+    }
+  },
+  watch: {
+    divisionArray (val, oldVal) {
+      if (this.divisionArray[2] === '') {
+        if (this.divisionArray[1] === '') {
+          if (this.divisionArray[0] !== '') {
+            this.selectedDivisionCode = this.divisionList[this.divisionArray[0]].divisionCode
+          }
+        } else {
+          this.selectedDivisionCode = this.divisionList[this.divisionArray[0]].children[this.divisionArray[1]].divisionCode
+        }
+      } else {
+        this.selectedDivisionCode = this.divisionList[this.divisionArray[0]].children[this.divisionArray[1]].children[this.divisionArray[2]].divisionCode
+      }
+      this.getHospitals()
     }
   }
 }

@@ -52,7 +52,7 @@ export default {
       password: '',
       auth: this.$dict.auth[window.sessionStorage.getItem('auth')],
       url: 'http://localhost:18908/auth/login',
-      user: []
+      user: {}
     }
   },
   methods: {
@@ -75,6 +75,7 @@ export default {
         window.sessionStorage.setItem('status', this.user.status)
         window.sessionStorage.setItem('userID', this.user.userID)
         window.sessionStorage.setItem('userName', this.user.userName)
+        window.sessionStorage.setItem('divisionCode', this.user.divisionCode)
       })
     },
     userLogout () {

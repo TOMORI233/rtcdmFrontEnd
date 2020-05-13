@@ -158,8 +158,8 @@ export default {
           }
         }).then(res => {
           console.log(res.data)
+          this.refresh()
         })
-        this.refresh()
       } else {
         alert('请指定接收医生')
       }

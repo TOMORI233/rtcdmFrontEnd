@@ -152,8 +152,9 @@ export default {
     // 路径变化直接反应在$route上，但params是$route中的属性，需要deep监听
     // 方便起见直接使用query改变全路径
     $route (val, oldVal) {
-      this.type = this.$route.query.type
-      if (val.fullPath === '/docpatientlist') {
+      if (val.fullPath !== '/docpatientlist') {
+        this.type = this.$route.query.type
+      } else {
         this.type = 0
       }
       this.refresh()

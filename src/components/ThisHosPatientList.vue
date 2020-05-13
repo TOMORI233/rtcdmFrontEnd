@@ -146,8 +146,9 @@ export default {
   },
   watch: {
     $route (val, oldVal) {
-      this.type = this.$route.query.type
-      if (val.fullPath === '/thishospatientlist') {
+      if (val.fullPath !== '/thishospatientlist') {
+        this.type = this.$route.query.type
+      } else {
         this.type = 0
       }
       this.refresh()

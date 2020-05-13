@@ -15,7 +15,7 @@
         <td>关联机构</td>
         <td>操作</td>
       </tr>
-      <tr v-for="patient in patients" :key="patient.patientID">
+      <tr v-for="(patient, index) in patients" :key="index">
         <td>{{ patient.patientID }}</td>
         <td>{{ patient.patientName }}</td>
         <td>{{ $dict.sex[patient.sex] }}</td>

@@ -67,7 +67,7 @@
                 <td>{{ patient.memo }}</td>
                 <td>
                   <div v-show="status===0">
-                    <router-link :to="{name:'PatientInfo', query:{patientID:alert.patientID, followupPlanSerialNo:patient.serialNo}}">随访</router-link>|
+                    <router-link :to="{name:'SubmitFollowupRecord', query:{patientID:patient.patientID, followupPlanSerialNo:patient.serialNo}}">随访</router-link>|
                     <a href="#" @click="ignoreFollowup(patient.serialNo);refresh()">忽略</a>
                   </div>
                 </td>
@@ -88,7 +88,6 @@
         <li>
           <a>
             <select name="pagesize" v-model="pageOffset" @change="refresh">
-              <option value="3">3</option>
               <option value="5">5</option>
               <option value="10">10</option>
             </select>
@@ -109,7 +108,7 @@ export default {
       totalEl: 0,
       totalPages: 0,
       pageIndex: 1,
-      pageOffset: 3,
+      pageOffset: 5,
       startDate: '',
       endDate: '',
       selectStartDate: '',

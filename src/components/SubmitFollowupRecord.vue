@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h4>患者随访</h4>
+      <h4>患者随访(ID:{{ patientID }})</h4>
       <div>
         <form v-if="templateCode===1" @submit.prevent="handleSubmit">
           <h5>COPD随访记录表</h5>
@@ -55,9 +55,9 @@ export default {
   inject: [],
   data () {
     return {
-      alertSerialNo: this.$route.query.alertSerialNo,
+      alertSerialNo: null,
       patientID: this.$route.query.patientID,
-      planSerialNo: this.$route.query.followupPlanSerialNo,
+      planSerialNo: null,
       content: null,
       selectedDeathTime: null,
       executeDoctorID: window.sessionStorage.getItem('userID'),
@@ -70,7 +70,7 @@ export default {
       templateCode: 1,
       isDead: false,
       otherFollowupType: '',
-      patientAlertList: this.$route.params.patientAlertList,
+      patientAlertList: null,
       isSuccess: false
     }
   },
@@ -82,15 +82,13 @@ export default {
       if (this.patientAlertList !== null) {
         this.patientAlertList.forEach(element => {
           this.submitFollowupRecord(element.serialNo)
-          if (this.isSuccess) {
-            this.goBack()
-          }
         })
       } else {
         this.submitFollowupRecord(this.alertSerialNo)
-        if (this.isSuccess) {
-          this.goBack()
-        }
+      }
+      if (this.isSuccess) {
+        alert('已随访')
+        this.goBack()
       }
     },
     submitFollowupRecord (alertSerialNo) {
@@ -125,15 +123,20 @@ export default {
         }
       }).then(res => {
         console.log(res.data)
-        if (res.data.message === 'success') {
-          this.isSuccess = true
-        } else {
-          this.isSuccess = false
-        }
       })
+      this.isSuccess = true
     }
   },
   created () {
+    if (this.$route.query.alertSerialNo !== undefined) {
+      this.alertSerialNo = this.$route.query.alertSerialNo
+    }
+    if (this.$route.query.followupPlanSerialNo !== undefined) {
+      this.planSerialNo = this.$route.query.followupPlanSerialNo
+    }
+    if (this.$route.params.patientAlertList !== undefined) {
+      this.patientAlertList = this.$route.params.patientAlertList
+    }
   },
   computed: {},
   watch: {}

@@ -76,11 +76,7 @@ export default {
           planDate: planDate
         }
       }).then(res => {
-        if (res.data.message === 'success') {
-          console.log('随访计划已保存')
-        } else {
-          console.log('保存失败')
-        }
+        console.log(res.data)
       })
       this.destroy()
     },
@@ -93,7 +89,9 @@ export default {
           viewerID: window.sessionStorage.getItem('userID')
         }
       }).then(res => {
-        this.patients = res.data.data
+        if (res.data.data !== null) {
+          this.patients = res.data.data
+        }
       })
     },
     destroy () {

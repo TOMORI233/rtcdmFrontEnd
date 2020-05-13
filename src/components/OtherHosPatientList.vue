@@ -7,20 +7,16 @@
       <a v-if="type===3">——转入管理</a>
     </h4>
     <div>下属医院:
-      <select v-model="divisionArray[0]" @change="divisionArray[1]='';divisionArray[2]='';orgCode=''">
-          <option value="" selected>-请选择第一级单位-</option>
-          <option v-for="(item0,index0) in divisionList" :key="index0" :value="index0">{{ item0.divisionName }}</option>
+      <select v-if="childrenDivisionList.children!==null" v-model="divisionArray[1]" @change="divisionArray[2]='';orgCode=''">
+          <option value="" selected>-请选择二级单位-</option>
+          <option v-for="(item1,index1) in childrenDivisionList.children" :key="index1" :value="index1">{{ item1.divisionName }}</option>
       </select>
-      <select v-if="divisionArray[0]!==''" v-model="divisionArray[1]" @change="divisionArray[2]='';orgCode=''">
-          <option value="" selected>-请选择第二级单位-</option>
-          <option v-for="(item1,index1) in divisionList[divisionArray[0]].children" :key="index1" :value="index1">{{ item1.divisionName }}</option>
-      </select>
-      <select v-if="divisionArray[1]!==''" v-model="divisionArray[2]" @change="orgCode=''">
-          <option value="" selected>-请选择第三级单位-</option>
-          <option v-for="(item2,index2) in divisionList[divisionArray[0]].children[divisionArray[1]].children" :key="index2" :value="index2">{{ item2.divisionName }}</option>
+      <select v-if="divisionArray[1]!==''&&childrenDivisionList.children[divisionArray[1]].children!==null" v-model="divisionArray[2]" @change="orgCode=''">
+          <option value="" selected>-请选择一级单位-</option>
+          <option v-for="(item2,index2) in childrenDivisionList.children[divisionArray[1]].children" :key="index2" :value="index2">{{ item2.divisionName }}</option>
       </select>
       <select v-model="orgCode" @change="refresh">
-          <option value="" disabled>-请选择-</option>
+          <option value="" disabled>-请选择医院-</option>
           <option v-for="hospital in hospitalList" :key="hospital.serialNo" :value="hospital.orgCode">{{ hospital.orgName }}</option>
       </select>
     </div>
@@ -84,9 +80,11 @@ export default {
         referralOutCount: '',
         referralInCount: ''
       },
+      divisionCode: window.sessionStorage.getItem('divisionCode'),
       divisionList: [{}],
-      divisionArray: ['', '', ''],
-      selectedDivisionCode: ''
+      divisionArray: [0, '', ''],
+      selectedDivisionCode: '',
+      childrenDivisionList: {}
     }
   },
   methods: {
@@ -133,6 +131,7 @@ export default {
       }).then(res => {
         if (res.data.data !== null) {
           this.divisionList = res.data.data
+          this.getChildrenDivisionList(this.divisionList, this.divisionCode)
         }
       })
     },
@@ -162,6 +161,18 @@ export default {
       this.pageIndex = 1
       this.fetchData()
       this.reload()
+    },
+    getChildrenDivisionList (divisionList, divisionCode) {
+      divisionList.forEach((element) => {
+        if (element.divisionCode === divisionCode) {
+          this.childrenDivisionList = element
+          console.log(this.childrenDivisionList.children)
+          return false
+        }
+        if (element.children !== null) {
+          this.getChildrenDivisionList(element.children, divisionCode)
+        }
+      })
     }
   },
   created () {

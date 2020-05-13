@@ -35,7 +35,6 @@
                 </td>
                 <td>{{ patient.registerDateTime }}</td>
                 <td>
-                  <a href="">详情</a>|
                   <a href="javascript:void(0)" @click="approveRegister(patient.serialNo, selectedDoctorID[index])">接收</a>|
                   <router-link :to="{name:'RefuseRegister', params:{serialNo:patient.serialNo}}">拒绝</router-link>
                 </td>

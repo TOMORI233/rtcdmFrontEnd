@@ -13,6 +13,7 @@ import AddFollowupPlan from '../components/AddFollowupPlan.vue'
 import RefuseRegister from '../components/RefuseRegister.vue'
 import AddPatient from '../components/AddPatient.vue'
 import RefuseReferral from '../components/RefuseReferral.vue'
+import PatientInfo from '../components/PatientInfo.vue'
 
 Vue.use(Router)
 
@@ -93,6 +94,11 @@ export default new Router({
           component: AddFollowupPlan
         }
       ]
+    },
+    {
+      path: '/patientinfo',
+      name: 'PatientInfo',
+      component: PatientInfo
     }
   ]
 })

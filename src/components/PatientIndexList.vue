@@ -27,7 +27,7 @@
         <td>{{ patient.terminationDateTime }}</td>
         <td>{{ patient.doctorName }}</td>
         <td>{{ patient.orgName }}</td>
-        <td><a href="">查看</a></td>
+        <td><router-link :to="{name:'PatientInfo',params:{patientID:patient.patientID}}">查看</router-link></td>
       </tr>
     </table>
   </div>

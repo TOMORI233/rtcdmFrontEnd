@@ -67,7 +67,7 @@
                 <td>{{ patient.memo }}</td>
                 <td>
                   <div v-show="status===0">
-                    <a href="">随访</a>|
+                    <router-link :to="{name:'PatientInfo',params:{patientID:patient.patientID,followupPlanSerialNo:patient.serialNo}}">随访</router-link>|
                     <a href="#" @click="ignoreFollowup(patient.serialNo);refresh()">忽略</a>
                   </div>
                 </td>

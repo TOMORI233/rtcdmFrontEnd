@@ -18,7 +18,7 @@
       </a>
       <button @click="refresh">刷新</button>
     </div>
-    <patlist v-bind:patients="patients"></patlist>
+    <patlist v-bind:patients="patients" v-bind:referralInManage="type===3||type===2"></patlist>
     <div class="page-bar">
       <ul>
         <li v-if="pageIndex>1"><a @click="pageIndex--;pageClick()">上一页</a></li>

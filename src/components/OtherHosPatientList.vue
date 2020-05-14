@@ -6,20 +6,18 @@
       <a v-if="type===2">——转出追踪</a>
       <a v-if="type===3">——转入管理</a>
     </h4>
-    <div>下属医院:
-      <select v-if="childrenDivisionList.children!==null" v-model="divisionArray[1]" @change="divisionArray[2]='';orgCode=''">
-          <option value="" selected>-请选择二级单位-</option>
-          <option v-for="(item1,index1) in childrenDivisionList.children" :key="index1" :value="index1">{{ item1.divisionName }}</option>
-      </select>
-      <select v-if="divisionArray[1]!==''&&childrenDivisionList.children[divisionArray[1]].children!==null" v-model="divisionArray[2]" @change="orgCode=''">
-          <option value="" selected>-请选择一级单位-</option>
-          <option v-for="(item2,index2) in childrenDivisionList.children[divisionArray[1]].children" :key="index2" :value="index2">{{ item2.divisionName }}</option>
-      </select>
-      <select v-model="orgCode" @change="refresh">
-          <option value="" disabled>-请选择医院-</option>
-          <option v-for="hospital in hospitalList" :key="hospital.serialNo" :value="hospital.orgCode">{{ hospital.orgName }}</option>
-      </select>
-    </div>
+  <div>
+    <a>本院:{{ subHospitalList.orgName }}—</a>
+    <a>下属医院:</a>
+    <select v-if="subHospitalList.children!==null" v-model="orgArray[0]" @change="orgArray[1]=''">
+        <option value="" selected disabled>-请选择-</option>
+        <option v-for="(item1,index1) in subHospitalList.children" :key="index1" :value="index1">{{ item1.orgName }}</option>
+    </select>
+    <select v-if="orgArray[0]!==''&&subHospitalList.children[orgArray[0]].children!==null" v-model="orgArray[1]">
+        <option value="" selected disabled>-请选择-</option>
+        <option v-for="(item2,index2) in subHospitalList.children[orgArray[0]].children" :key="index2" :value="index2">{{ item2.orgName }}</option>
+    </select>
+  </div>
     <div>
       <a name="patientcounttext">该院共
         <a href="javascript:void(0)" @click="type=0;refresh()">{{ patientCount.totalCount }}</a>名患者，
@@ -66,7 +64,6 @@ export default {
   },
   data () {
     return {
-      orgCode: '',
       hospitalList: [],
       patients: [],
       totalEl: 0,
@@ -80,21 +77,20 @@ export default {
         referralOutCount: '',
         referralInCount: ''
       },
-      divisionCode: window.sessionStorage.getItem('divisionCode'),
-      divisionList: [{}],
-      divisionArray: [0, '', ''],
-      selectedDivisionCode: '',
-      childrenDivisionList: {}
+      orgCode: window.sessionStorage.getItem('orgCode'),
+      subHospitalList: {},
+      orgArray: ['', ''],
+      selectedOrgCode: ''
     }
   },
   methods: {
     fetchData () {
-      if (this.orgCode !== '') {
+      if (this.selectedOrgCode !== '') {
         this.$axios({
           url: 'http://localhost:18908/manage/index/page/hospital',
           method: 'get',
           params: {
-            orgCode: this.orgCode,
+            orgCode: this.selectedOrgCode,
             pageIndex: this.pageIndex,
             pageOffset: this.pageOffset,
             type: this.type
@@ -112,7 +108,7 @@ export default {
           url: 'http://localhost:18908/manage/index/count/hospital',
           method: 'get',
           params: {
-            orgCode: this.orgCode
+            orgCode: this.selectedOrgCode
           }
         }).then(res => {
           if (res.data.data !== null) {
@@ -121,30 +117,16 @@ export default {
         })
       }
     },
-    getDivisionList () {
+    getSubHospitals () {
       this.$axios({
-        url: 'http://localhost:18908/dict/division/list',
+        url: 'http://localhost:18908/dict/org/subhospital',
         method: 'get',
         params: {
-
+          orgCode: this.orgCode
         }
       }).then(res => {
         if (res.data.data !== null) {
-          this.divisionList = res.data.data
-          this.getChildrenDivisionList(this.divisionList, this.divisionCode)
-        }
-      })
-    },
-    getHospitals () {
-      this.$axios({
-        url: 'http://localhost:18908/dict/org/list',
-        method: 'get',
-        params: {
-          divisionCode: this.selectedDivisionCode
-        }
-      }).then(res => {
-        if (res.data.data !== null) {
-          this.hospitalList = res.data.data
+          this.subHospitalList = res.data.data
         }
       })
     },
@@ -161,23 +143,10 @@ export default {
       this.pageIndex = 1
       this.fetchData()
       this.reload()
-    },
-    getChildrenDivisionList (divisionList, divisionCode) {
-      divisionList.forEach((element) => {
-        if (element.divisionCode === divisionCode) {
-          this.childrenDivisionList = element
-          console.log(this.childrenDivisionList.children)
-          return false
-        }
-        if (element.children !== null) {
-          this.getChildrenDivisionList(element.children, divisionCode)
-        }
-      })
     }
   },
   created () {
-    this.fetchData()
-    this.getDivisionList()
+    this.getSubHospitals()
   },
   computed: {
     indexs () {
@@ -206,19 +175,15 @@ export default {
     }
   },
   watch: {
-    divisionArray (val, oldVal) {
-      if (this.divisionArray[2] === '') {
-        if (this.divisionArray[1] === '') {
-          if (this.divisionArray[0] !== '') {
-            this.selectedDivisionCode = this.divisionList[this.divisionArray[0]].divisionCode
-          }
-        } else {
-          this.selectedDivisionCode = this.divisionList[this.divisionArray[0]].children[this.divisionArray[1]].divisionCode
+    orgArray (val, oldVal) {
+      if (this.orgArray[1] === '') {
+        if (this.orgArray[0] !== '') {
+          this.selectedOrgCode = this.subHospitalList.children[this.orgArray[0]].orgCode
         }
       } else {
-        this.selectedDivisionCode = this.divisionList[this.divisionArray[0]].children[this.divisionArray[1]].children[this.divisionArray[2]].divisionCode
+        this.selectedOrgCode = this.subHospitalList.children[this.orgArray[0]].children[this.orgArray[1]].orgCode
       }
-      this.getHospitals()
+      this.refresh()
     }
   }
 }

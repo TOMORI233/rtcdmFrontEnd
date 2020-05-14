@@ -2,7 +2,7 @@
  * @Author: TOMORI
  * @Date: 2020-05-12 21:10:06
  * @Last Modified by: TOMORI
- * @Last Modified time: 2020-05-13 20:29:40
+ * @Last Modified time: 2020-05-14 22:44:52
  */
 <template>
     <div>
@@ -67,11 +67,13 @@
                     <a>累计随访次数：{{ manageInfo.complianceRate }}</a>
                 </div>
             </div>
-            <div>
+            <div >
                 <h5>转诊信息</h5>
+                <router-link id="referralbackbtn" v-if="referralInfo.status===1" :to="{name:'ReferralBack',query:{referralSerialNo:referralInfo.serialNo, patientID:patientID}}" tag="button">转回</router-link>
                 <div v-if="JSON.stringify(referralInfo) !== '{}'">
                     <div>
                         <a v-if="referralInfo.status===0">转诊状态：待转</a>
+                        <a v-else-if="referralInfo.status===3">转诊状态：已转回</a>
                         <a v-else>转诊状态：{{ $dict.referralType[referralInfo.referralType] }}</a>
                         <a>转诊医院：{{ referralOrgName }}</a>
                         <a>转诊医生：{{ referralDoctorName }}</a>
@@ -244,7 +246,9 @@
                 <td>{{ alert.alertName }}</td>
                 <td>{{ alert.alertReason }}</td>
                 <td>{{ $dict.alertRecordStatus[alert.status] }}</td>
-                <td>操作</td>
+                <td>
+                  <router-link v-if="alert.status===0" :to="{name:'IgnoreAlert', params:{serialNo:alert.serialNo, ignoreAll:false}}">忽略</router-link>
+                </td>
               </tr>
             </table>
         </div>
@@ -257,7 +261,6 @@
                 <th>随访方式</th>
                 <th>随访结果</th>
                 <th>记录摘要</th>
-                <th>操作</th>
               </tr>
               <tr v-for="followup in followupHistory" :key="followup.serialNo">
                 <td>{{ followup.executeTime }}</td>
@@ -265,7 +268,6 @@
                 <td>{{ followup.followupMethod }}</td>
                 <td>{{ $dict.followupRecordStatus[followup.status] }}</td>
                 <td>{{ followup.summary }}</td>
-                <td>操作</td>
               </tr>
             </table>
         </div>
@@ -288,13 +290,11 @@
                 <th>评估时间</th>
                 <th>得分</th>
                 <th>备注</th>
-                <th>操作</th>
               </tr>
               <tr v-for="evaluation in evaluationHistory" :key="evaluation.serialNo">
                 <td>{{ evaluation.recordTime }}</td>
                 <td>{{ evaluation.value }}</td>
                 <td>{{ evaluation.memo }}</td>
-                <td>操作</td>
               </tr>
             </table>
         </div>
@@ -308,7 +308,6 @@
                 <th>转诊类型</th>
                 <th>转诊目的</th>
                 <th>转诊原因</th>
-                <th>操作</th>
               </tr>
               <tr v-for="referral in referralHistory" :key="referral.serialNo">
                 <td>{{ referral.startDateTime }}</td>
@@ -317,7 +316,6 @@
                 <td>{{ $dict.referralType[referral.referralType] }}</td>
                 <td>{{ $dict.referralPurpose[referral.referralPurpose] }}</td>
                 <td>{{ referral.referralReason }}</td>
-                <td>操作</td>
               </tr>
             </table>
         </div>

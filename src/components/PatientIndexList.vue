@@ -27,7 +27,12 @@
         <td>{{ patient.terminationDateTime }}</td>
         <td>{{ patient.doctorName }}</td>
         <td>{{ patient.orgName }}</td>
-        <td><router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID}}">查看</router-link></td>
+        <td>
+          <router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID}}">查看</router-link>
+          <a v-if="referralInManage===true">
+            |<router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID}}">转回</router-link>
+          </a>
+        </td>
       </tr>
     </table>
   </div>
@@ -40,6 +45,10 @@ export default {
     patients: {
       type: Array,
       required: true
+    },
+    referralInManage: {
+      type: Boolean,
+      required: false
     }
   }
 }

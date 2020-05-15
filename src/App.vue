@@ -14,7 +14,6 @@ export default {
   },
   data () {
     return {
-      isLogin: window.sessionStorage.getItem('isLogin'),
       isRouterAlive: true
     }
   },
@@ -30,10 +29,15 @@ export default {
         this.isRouterAlive = true
       })
     }
+  },
+  created () {
+    if (window.sessionStorage.getItem('isLogin') === null) {
+      window.sessionStorage.setItem('isLogin', false)
+    }
   }
 }
 </script>
 
 <style>
-
+@import './assets/login.css'
 </style>

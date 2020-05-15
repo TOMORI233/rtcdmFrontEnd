@@ -2,7 +2,7 @@
  * @Author: TOMORI
  * @Date: 2020-05-12 21:10:06
  * @Last Modified by: TOMORI
- * @Last Modified time: 2020-05-14 22:44:52
+ * @Last Modified time: 2020-05-15 18:27:23
  */
 <template>
     <div>
@@ -17,9 +17,9 @@
                 <input type="radio" :value='5' v-model="type" @change="refresh()">评估记录
                 <input type="radio" :value='6' v-model="type" @change="refresh()">转诊历史
             </div>
-            <router-link :to="{name:'SubmitFollowupRecord', query:{patientID:patientID,alertSerialNo:alertSerialNo,followupPlanSerialNo:followupPlanSerialNo}, params:{patientAlertList:patientAlertList}}" tag="button">随访</router-link>
+            <router-link v-if="isOptional" :to="{name:'SubmitFollowupRecord', query:{patientID:patientID,alertSerialNo:alertSerialNo,followupPlanSerialNo:followupPlanSerialNo}, params:{patientAlertList:patientAlertList}}" tag="button">随访</router-link>
             <!-- <button>消息</button> -->
-            <router-link :to="{name:'ApplyReferral', query:{patientID:patientID,name:baseInfo.name,alertSerialNo:alertSerialNo}}" tag="button">转诊</router-link>
+            <router-link  v-if="isOptional" :to="{name:'ApplyReferral', query:{patientID:patientID,name:baseInfo.name,alertSerialNo:alertSerialNo}}" tag="button">转诊</router-link>
             <button @click="goBack">返回</button>
             <button @click="refresh">刷新</button>
         </div>
@@ -69,11 +69,11 @@
             </div>
             <div >
                 <h5>转诊信息</h5>
-                <router-link id="referralbackbtn" v-if="referralInfo.status===1" :to="{name:'ReferralBack',query:{referralSerialNo:referralInfo.serialNo, patientID:patientID}}" tag="button">转回</router-link>
+                <router-link id="referralbackbtn" v-if="referralInfo.status===1&&isOptional" :to="{name:'ReferralBack',query:{referralSerialNo:referralInfo.serialNo, patientID:patientID}}" tag="button">转回</router-link>
                 <div v-if="JSON.stringify(referralInfo) !== '{}'">
                     <div>
                         <a v-if="referralInfo.status===0">转诊状态：待转</a>
-                        <a v-else-if="referralInfo.status===3">转诊状态：已转回</a>
+                        <a v-else-if="referralInfo.status===3">转诊状态：已结束</a>
                         <a v-else>转诊状态：{{ $dict.referralType[referralInfo.referralType] }}</a>
                         <a>转诊医院：{{ referralOrgName }}</a>
                         <a>转诊医生：{{ referralDoctorName }}</a>
@@ -350,6 +350,7 @@ export default {
   data () {
     return {
       // page params
+      isOptional: false,
       type: 0,
       recordType: 1,
       totalEl: 0,
@@ -646,6 +647,9 @@ export default {
     }
     if (this.interveneAll === true) {
       this.patientAlertList = this.$route.params.patientAlertList
+    }
+    if (this.$route.params.isOptional !== undefined) {
+      this.isOptional = this.$route.params.isOptional
     }
     this.fetchData()
   },

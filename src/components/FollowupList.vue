@@ -5,11 +5,11 @@
       <a name="patientcounttext">该时间内共有
         <a>{{ patientCount.totalCount }}</a>个随访计划，
         其中待随访
-        <a href="#" @click="status=0;refresh()">{{ patientCount.toFollowupCount }}</a>，
+        <a href="javascript:void(0)" @click="status=0;refresh()">{{ patientCount.toFollowupCount }}</a>，
         已随访
-        <a href="#" @click="status=1;refresh()">{{ patientCount.followedupCount }}</a>，
+        <a href="javascript:void(0)" @click="status=1;refresh()">{{ patientCount.followedupCount }}</a>，
         已失效/忽略
-        <a href="#" @click="status=2;refresh()">{{ patientCount.abolishedCount }}</a>
+        <a href="javascript:void(0)" @click="status=2;refresh()">{{ patientCount.abolishedCount }}</a>
       </a>
       <button @click="refresh">刷新</button>
       <button @click="type=0;status=0;refresh()">本院患者</button>
@@ -68,7 +68,7 @@
                 <td>
                   <div v-show="status===0">
                     <router-link :to="{name:'SubmitFollowupRecord', query:{patientID:patient.patientID, followupPlanSerialNo:patient.serialNo}}">随访</router-link>|
-                    <a href="#" @click="ignoreFollowup(patient.serialNo);refresh()">忽略</a>
+                    <a href="javascript:void(0)" @click="ignoreFollowup(patient.serialNo);refresh()">忽略</a>
                   </div>
                 </td>
             </tr>

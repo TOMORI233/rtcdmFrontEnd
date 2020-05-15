@@ -2,7 +2,7 @@
  * @Author: TOMORI
  * @Date: 2020-05-13 13:15:22
  * @Last Modified by: TOMORI
- * @Last Modified time: 2020-05-14 13:58:08
+ * @Last Modified time: 2020-05-15 16:03:08
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -23,6 +23,7 @@ import PatientInfo from '../components/PatientInfo.vue'
 import SubmitFollowupRecord from '../components/SubmitFollowupRecord.vue'
 import ApplyReferral from '../components/ApplyReferral.vue'
 import ReferralBack from '../components/ReferralBack.vue'
+import Login from '../components/Login.vue'
 
 // 此VueRouter是自己自定义引入暴露出来的，即是自定义的，以下的VueRouter同样是这样
 // 解决两次访问相同路由地址报错
@@ -37,10 +38,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/login'
     },
     {
       path: '/home',
+      name: Home,
       component: Home
     },
     {
@@ -130,6 +132,11 @@ export default new Router({
       path: '/referralback',
       name: 'ReferralBack',
       component: ReferralBack
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

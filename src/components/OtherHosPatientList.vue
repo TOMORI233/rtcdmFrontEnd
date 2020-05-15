@@ -30,7 +30,7 @@
       </a>
       <button @click="refresh">刷新</button>
     </div>
-    <patlist :patients="patients"></patlist>
+    <patlist :patients="patients" :isOptional="false"></patlist>
     <div class="page-bar">
       <ul>
         <li v-if="pageIndex>1"><a @click="pageIndex--;pageClick()">上一页</a></li>

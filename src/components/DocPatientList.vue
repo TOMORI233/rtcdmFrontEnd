@@ -18,7 +18,7 @@
       </a>
       <button @click="refresh">刷新</button>
     </div>
-    <patlist v-bind:patients="patients" v-bind:referralInManage="type===3||type===2"></patlist>
+    <patlist :patients="patients" :referralInManage="type===3" :isOptional="auth===0"></patlist>
     <div class="page-bar">
       <ul>
         <li v-if="pageIndex>1"><a @click="pageIndex--;pageClick()">上一页</a></li>
@@ -56,14 +56,15 @@ export default {
       totalEl: 0,
       totalPages: 0,
       pageIndex: 1,
-      pageOffset: 3,
+      pageOffset: 5,
       type: 0,
       patientCount: {
         totalCount: '',
         managingCount: '',
         referralOutCount: '',
         referralInCount: ''
-      }
+      },
+      auth: JSON.parse(window.sessionStorage.getItem('auth'))
     }
   },
   methods: {

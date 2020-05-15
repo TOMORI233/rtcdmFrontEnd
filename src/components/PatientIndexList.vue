@@ -28,9 +28,9 @@
         <td>{{ patient.doctorName }}</td>
         <td>{{ patient.orgName }}</td>
         <td>
-          <router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID}}">查看</router-link>
-          <a v-if="referralInManage===true">
-            |<router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID}}">转回</router-link>
+          <router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID},params:{isOptional:isOptional}}">查看</router-link>
+          <a v-if="referralInManage===true&&isOptional">
+            |<router-link :to="{name:'PatientInfo',query:{patientID:patient.patientID},params:{isOptional:isOptional}}">转回</router-link>
           </a>
         </td>
       </tr>
@@ -41,6 +41,11 @@
 <script>
 export default {
   name: 'PatientIndexList',
+  data () {
+    return {
+
+    }
+  },
   props: {
     patients: {
       type: Array,
@@ -49,6 +54,10 @@ export default {
     referralInManage: {
       type: Boolean,
       required: false
+    },
+    isOptional: {
+      type: Boolean,
+      required: true
     }
   }
 }

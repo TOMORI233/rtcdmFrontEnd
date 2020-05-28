@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <div v-if="isLogin===true">
-      <h4>Welcome! {{ userName }}</h4>
-      <button @click="userLogout">退出</button>
-      <ul>
+  <div v-if="isLogin===true" class="side-container">
+    <aside>
+      <h1>COPD Welcome!</h1>
+      <span>
+        <a>{{ userName }}</a>
+        <button @click="userLogout">退出</button>
+      </span>
+      <hr>
+      <ul id="side-ul">
         <li><a href="#/home">主页</a></li>
         <a>患者管理</a>
         <li><a href="#/alertlist">预警列表</a></li>
@@ -25,7 +29,7 @@
         </li>
         <!-- <li><a href="#/referralautoreview">自动审核设置</a></li> -->
       </ul>
-    </div>
+    </aside>
   </div>
 </template>
 

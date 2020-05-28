@@ -23,15 +23,15 @@
                     </tr>
                     <tr>转诊医院：
                         <select v-model="divisionArray[0]" @change="divisionArray[1]='';divisionArray[2]='';targetOrgCode=''">
-                            <option value="" selected>-请选择三级单位-</option>
+                            <option value="" selected>-请选择三级地区-</option>
                             <option v-for="(item0,index0) in divisionList" :key="index0" :value="index0">{{ item0.divisionName }}</option>
                         </select>
                         <select v-if="divisionArray[0]!==''&&divisionList[divisionArray[0]].children!==null" v-model="divisionArray[1]" @change="divisionArray[2]='';targetOrgCode=''">
-                            <option value="" selected>-请选择二级单位-</option>
+                            <option value="" selected>-请选择二级地区-</option>
                             <option v-for="(item1,index1) in divisionList[divisionArray[0]].children" :key="index1" :value="index1">{{ item1.divisionName }}</option>
                         </select>
                         <select v-if="divisionArray[1]!==''&&divisionList[divisionArray[0]].children[divisionArray[1]].children!==null" v-model="divisionArray[2]" @change="targetOrgCode=''">
-                            <option value="" selected>-请选择一级单位-</option>
+                            <option value="" selected>-请选择一级地区-</option>
                             <option v-for="(item2,index2) in divisionList[divisionArray[0]].children[divisionArray[1]].children" :key="index2" :value="index2">{{ item2.divisionName }}</option>
                         </select>
                         <select v-model="targetOrgCode">

@@ -13,7 +13,7 @@
       </a>
       <button @click="refresh">刷新</button>
       <button @click="type=0;status=0;refresh()">本院患者</button>
-      <button @click="type=1;status=0;refresh()">转入患者</button>
+      <button @click="type=1;status=0;refresh()">转诊患者</button>
     </div>
     <div>
         <button @click="setToday();status=0;timeSelect='off';refresh()">今天</button>

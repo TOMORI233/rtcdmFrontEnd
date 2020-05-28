@@ -31,6 +31,46 @@
             <tr>死亡时间：
               <input type="datetime-local" v-model="selectedDeathTime" :disabled="!isDead">
             </tr>
+            <tr>生活质量：
+              <input type="radio" value="良好" v-model="content.liveQuality" checked>良好
+              <input type="radio" value="一般" v-model="content.liveQuality">一般
+              <input type="radio" value="不佳" v-model="content.liveQuality">不佳
+            </tr>
+            <tr>身体状况：
+              <input type="radio" value="良好" v-model="content.physicalCondition" checked>良好
+              <input type="radio" value="一般" v-model="content.physicalCondition">一般
+              <input type="radio" value="不佳" v-model="content.physicalCondition">不佳
+            </tr>
+            <tr>心理状况：
+              <input type="radio" value="良好" v-model="content.mentalCondition" checked>良好
+              <input type="radio" value="一般" v-model="content.mentalCondition">一般
+              <input type="radio" value="不佳" v-model="content.mentalCondition">不佳
+            </tr>
+            <tr>服药状况：
+              <input type="radio" value="良好" v-model="content.drugCondition" checked>良好
+              <input type="radio" value="一般" v-model="content.drugCondition">一般
+              <input type="radio" value="不佳" v-model="content.drugCondition">不佳
+            </tr>
+            <tr>有无急性症状：
+              <input type="radio" :value='false' v-model="content.hasAcuteSymptoms" checked>无
+              <input type="radio" :value='true' v-model="content.hasAcuteSymptoms">有
+            </tr>
+            <tr>
+              <div>
+                急性症状：
+              </div>
+              <textarea cols="65" rows="7" v-model="content.acuteSypmtoms" placeholder="请填写患者新增急性症状" :disabled="content.hasAcuteSymptoms===false"></textarea>
+            </tr>
+            <tr>有无新增不适症状：
+              <input type="radio" :value='false' v-model="content.hasNewDiscomfort" checked>无
+              <input type="radio" :value='true' v-model="content.hasNewDiscomfort">有
+            </tr>
+            <tr>
+              <div>
+                新增不适症状：
+              </div>
+              <textarea cols="65" rows="7" v-model="content.newDiscomfort" placeholder="请填写患者新增不适症状" :disabled="content.hasNewDiscomfort===false"></textarea>
+            </tr>
             <tr>
               <div>
                 摘要记录：
@@ -58,7 +98,16 @@ export default {
       alertSerialNo: null,
       patientID: this.$route.query.patientID,
       planSerialNo: null,
-      content: null,
+      content: {
+        liveQuality: '良好',
+        physicalCondition: '良好',
+        mentalCondition: '良好',
+        drugCondition: '良好',
+        hasAcuteSymptoms: false,
+        acuteSymptoms: null,
+        hasNewDiscomfort: false,
+        newDiscomfort: null
+      },
       selectedDeathTime: null,
       executeDoctorID: window.sessionStorage.getItem('userID'),
       failureReason: null,
@@ -108,7 +157,7 @@ export default {
         method: 'post',
         data: {
           alertSerialNo: alertSerialNo,
-          content: this.content,
+          content: JSON.stringify(this.content),
           deathTime: deathTime,
           executeDoctorID: this.executeDoctorID,
           failureReason: this.failureReason,

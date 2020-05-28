@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-      <navi></navi>
-      <router-view/>
+      <navi class="side-bar"></navi>
+      <router-view class="content-container"/>
   </div>
 </template>
 
@@ -39,5 +39,6 @@ export default {
 </script>
 
 <style>
-@import './assets/login.css'
+@import './assets/login.css';
+@import './assets/side-bar.css';
 </style>
